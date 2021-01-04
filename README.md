@@ -1,3 +1,9 @@
+# MiCorp Comments
+
+I've saved data to 'W:\Shared With Me\Gibraltar\OTHER\AI Crowd Competition\Data'
+
+Please don't share this repo with anyone.
+
 # Insurance Pricing Game
 
 ![AIcrowd-Logo](https://raw.githubusercontent.com/AIcrowd/AIcrowd/master/app/assets/images/misc/aicrowd-horizontal.png)
