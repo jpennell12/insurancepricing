@@ -19,3 +19,8 @@ docs/_build/
 
 claims.csv
 prices.csv
+
+Scripts/
+Lib/
+Include/
+pyvenv.cfg
