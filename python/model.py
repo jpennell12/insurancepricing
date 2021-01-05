@@ -33,7 +33,7 @@ def fit_model(X_raw, y_raw):
 
     # TODO: train your model here.
 
-    return np.mean(y_raw) + 5  # By default, training a model that returns a mean value (a mean model).
+    return np.mean(y_raw)  # By default, training a model that returns a mean value (a mean model).
 
 
 
@@ -79,19 +79,19 @@ def predict_premium(model, X_raw):
 	Parameters
 	----------
 	model: a Python object that describes your model. This can be anything, as long
-	    as it is consistent with what `fit` outpurs.
+		as it is consistent with what `fit` outpurs.
 	X_raw : Pandas dataframe, with the columns described in the data dictionary.
 		Each row is a different contract. This data has not been processed.
 
 	Returns
 	-------
 	prices: a one-dimensional Numpy array of the same length as X_raw, with one
-	    price per contract (in same order). These prices must be POSITIVE (>0).
+		price per contract (in same order). These prices must be POSITIVE (>0).
 	"""
 
 	# TODO: return a price for everyone.
 
-	return predict_expected_claim(model, X_raw)  # Default: price at the pure premium with no pricing strategy.
+	return predict_expected_claim(model, X_raw) + 2  # Default: price at the pure premium with no pricing strategy.
 
 
 
@@ -101,12 +101,12 @@ def save_model(model):
 	This is used to save the model after training, so that it can be used for prediction later.
 
 	Do not touch this unless necessary (if you need specific features). If you do, do not
-	 forget to update the load_model method to be compatible.
+		forget to update the load_model method to be compatible.
 
 	Parameters
 	----------
 	model: a Python object that describes your model. This can be anything, as long
-	    as it is consistent with what `fit` outpurs."""
+		as it is consistent with what `fit` outpurs."""
 
 	with open('trained_model.pickle', 'wb') as target:
 		pickle.dump(model, target)
@@ -117,8 +117,8 @@ def save_model(model):
 def load_model():
 	"""Load a saved trained model from the file.
 
-	   This is called by the server to evaluate your submission on hidden data.
-	   Only modify this *if* you modified save_model."""
+		This is called by the server to evaluate your submission on hidden data.
+		Only modify this *if* you modified save_model."""
 
 	with open('trained_model.pickle', 'rb') as target:
 		trained_model = pickle.load(target)
