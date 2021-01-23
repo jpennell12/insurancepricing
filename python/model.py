@@ -15,54 +15,65 @@ import pandas as pd
 
 
 def fit_model(X_raw, y_raw):
-    """Model training function: given training data (X_raw, y_raw), train this pricing model.
+	"""Model training function: given training data (X_raw, y_raw), train this pricing model.
 
-    Parameters
-    ----------
-    X_raw : Pandas dataframe, with the columns described in the data dictionary.
-        Each row is a different contract. This data has not been processed.
-    y_raw : a Numpy array, with the value of the claims, in the same order as contracts in X_raw.
-        A one dimensional array, with values either 0 (most entries) or >0.
+	Parameters
+	----------
+	X_raw : Pandas dataframe, with the columns described in the data dictionary.
+		Each row is a different contract. This data has not been processed.
+	y_raw : a Numpy array, with the value of the claims, in the same order as contracts in X_raw.
+		A one dimensional array, with values either 0 (most entries) or >0.
 
-    Returns
-    -------
-    self: this instance of the fitted model. This can be anything, as long as it is compatible
-        with your prediction methods.
+	Returns
+	-------
+	self: this instance of the fitted model. This can be anything, as long as it is compatible
+		with your prediction methods.
 
-    """
+	"""
 
-    # TODO: train your model here.
+	# TODO: train your model here.
 
-    return np.mean(y_raw)  # By default, training a model that returns a mean value (a mean model).
+	return np.mean(y_raw)  # By default, training a model that returns a mean value (a mean model).
 
 
 
 def predict_expected_claim(model, X_raw):
-    """Model prediction function: predicts the expected claim based on the pricing model.
+	"""Model prediction function: predicts the expected claim based on the pricing model.
 
-    This functions estimates the expected claim made by a contract (typically, as the product
-    of the probability of having a claim multiplied by the expected cost of a claim if it occurs),
-    for each contract in the dataset X_raw.
+	This functions estimates the expected claim made by a contract (typically, as the product
+	of the probability of having a claim multiplied by the expected cost of a claim if it occurs),
+	for each contract in the dataset X_raw.
 
-    This is the function used in the RMSE leaderboard, and hence the output should be as close
-    as possible to the expected cost of a contract.
+	This is the function used in the RMSE leaderboard, and hence the output should be as close
+	as possible to the expected cost of a contract.
 
-    Parameters
-    ----------
-    model: a Python object that describes your model. This can be anything, as long
-        as it is consistent with what `fit` outpurs.
-    X_raw : Pandas dataframe, with the columns described in the data dictionary.
-        Each row is a different contract. This data has not been processed.
+	Parameters
+	----------
+	model: a Python object that describes your model. This can be anything, as long
+		as it is consistent with what `fit` outpurs.
+	X_raw : Pandas dataframe, with the columns described in the data dictionary.
+		Each row is a different contract. This data has not been processed.
 
-    Returns
-    -------
-    avg_claims: a one-dimensional Numpy array of the same length as X_raw, with one
-        expected claim per contract (in same order). These expected claims must be POSITIVE (>0).
-    """
+	Returns
+	-------
+	avg_claims: a one-dimensional Numpy array of the same length as X_raw, with one
+		expected claim per contract (in same order). These expected claims must be POSITIVE (>0).
+	"""
 
-    # TODO: estimate the expected claim of every contract.
+	# TODO: estimate the expected claim of every contract.
+	with open('regression_frequency_model.pickle', 'rb') as target:
+		freq_model = pickle.load(target)
 
-    return np.full( (len(X_raw.index),), model )  # Estimate that each contract will cost 114 (this is the naive mean model). You should change this!
+	with open('regression_severity_model.pickle', 'rb') as target:
+		sev_model = pickle.load(target)
+
+	exclude = ['claim_amount', 'id_policy', 'pol_coverage', 'pol_payd', 'pol_pay_freq', 'pol_usage', 'vh_fuel', 'vh_make_model', 'vh_type', 'drv_sex1', 'drv_drv2', 'drv_age2', 'drv_lic2', 'drv_sex2','year']
+	
+	x = X_raw[X_raw.columns.difference(exclude)]
+
+	result = freq_model.predict(x) * 1500
+
+	return result  # Estimate that each contract will cost 114 (this is the naive mean model). You should change this!
 
 
 
